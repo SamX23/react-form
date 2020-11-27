@@ -1,9 +1,10 @@
-import { useState } from "react";
-const Forms = () => {
+import { useState, useEffect } from "react";
+function Forms() {
   const [state, setState] = useState({
     username: "",
     usernameValid: false,
     email: "",
+    emailValid: false,
     password: "",
     passwordValid: false,
     passwordConfirm: "",
@@ -11,10 +12,75 @@ const Forms = () => {
     errorMsg: {},
   });
 
-  const validateUsername = () => {
-    const { username } = state;
-    let usernameValid = true;
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
+  const validateForm = () => {
+    const {
+      usernameValid,
+      emailValid,
+      passwordValid,
+      passwordConfirmValid,
+    } = state;
+    setState({
+      ...state,
+      formValid:
+        usernameValid && emailValid && passwordValid && passwordConfirmValid,
+    });
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { username, email, password, passwordConfirm } = state;
+    const value = e.target.value;
+    const id = e.target.id;
     let errorMsg = { ...state.errorMsg };
+    let usernameValid = true;
+    let emailValid = true;
+    let passwordValid = true;
+    let passwordConfirmValid = true;
+
+    if (id === "username" && username.length < 6) {
+      usernameValid = false;
+      errorMsg.username = "username should be 6 or more characters";
+    }
+
+    if (id === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailValid = false;
+      errorMsg.email = "Invalid email format";
+    }
+
+    if (id === "password" && password.length < 8) {
+      passwordValid = false;
+      errorMsg.password = "Passwords should at least 8 characters";
+    }
+
+    if (id === "passwordConfirm" && password !== passwordConfirm) {
+      passwordConfirmValid = false;
+      errorMsg.passwordConfirm = "Passwords do not match";
+    }
+
+    setState({
+      ...state,
+      [id]: value,
+      usernameValid,
+      emailValid,
+      passwordValid,
+      passwordConfirmValid,
+      errorMsg,
+    });
+  };
+
+  const ValidationMessage = ({ valid, message }) => {
+    if (!valid) {
+      return (
+        <div className="alert-danger" role="alert">
+          {message}
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -29,8 +95,14 @@ const Forms = () => {
             className="form-control"
             id="username"
             value={state.username}
-            onChange={(e) => setState({ username: e.target.value })}
+            onChange={handleChange}
           />
+          <span>
+            <ValidationMessage
+              valid={state.usernameValid}
+              message={state.errorMsg.username}
+            />
+          </span>
         </div>
         {/* Email */}
         <div className="form-group">
@@ -40,8 +112,14 @@ const Forms = () => {
             className="form-control"
             id="email"
             value={state.email}
-            onChange={(e) => setState({ email: e.target.value })}
+            onChange={handleChange}
           />
+          <span>
+            <ValidationMessage
+              valid={state.emailValid}
+              message={state.errorMsg.email}
+            />
+          </span>
         </div>
         {/* Password */}
         <div className="form-group">
@@ -51,8 +129,14 @@ const Forms = () => {
             className="form-control"
             id="password"
             value={state.password}
-            onChange={(e) => setState({ password: e.target.value })}
+            onChange={handleChange}
           />
+          <span>
+            <ValidationMessage
+              valid={state.passwordValid}
+              message={state.errorMsg.password}
+            />
+          </span>
         </div>
         {/* Confirm Password */}
         <div className="form-group">
@@ -60,10 +144,16 @@ const Forms = () => {
           <input
             type="password"
             className="form-control"
-            id="confirmPassword"
+            id="passwordConfirm"
             value={state.passwordConfirm}
-            onChange={(e) => setState({ passwordConfirm: e.target.value })}
+            onChange={handleChange}
           />
+          <span>
+            <ValidationMessage
+              valid={state.passwordConfirmValid}
+              message={state.errorMsg.passwordConfirm}
+            />
+          </span>
         </div>
       </form>
       <p>Username : {state.username}</p>
@@ -72,6 +162,6 @@ const Forms = () => {
       <p>PasswordConfirm : {state.passwordConfirm}</p>
     </div>
   );
-};
+}
 
 export default Forms;
