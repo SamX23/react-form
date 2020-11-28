@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 function Forms() {
-  const [state, setState] = useState({
+  const [data, setData] = useState({
     username: "",
     email: "",
     password: "",
@@ -18,10 +18,10 @@ function Forms() {
 
   const handleChange = (e) => {
     e.preventDefault();
-    const { username, email, password, passwordConfirm } = state;
+    const { username, email, password, passwordConfirm } = data;
     const value = e.target.value;
     const id = e.target.id;
-    let errorMsg = { ...state.errorMsg };
+    let errorMsg = { ...data.errorMsg };
     let usernameValid = true;
     let emailValid = true;
     let passwordValid = true;
@@ -47,8 +47,8 @@ function Forms() {
       errorMsg.passwordConfirm = "Passwords do not match";
     }
 
-    setState({
-      ...state,
+    setData({
+      ...data,
       [id]: value,
       usernameValid,
       emailValid,
@@ -62,7 +62,7 @@ function Forms() {
   const resetForm = (e) => {
     e.preventDefault();
 
-    setState({
+    setData({
       username: "",
       email: "",
       password: "",
@@ -98,13 +98,13 @@ function Forms() {
             type="text"
             className="form-control"
             id="username"
-            value={state.username}
+            value={data.username}
             onChange={handleChange}
           />
           <span>
             <ValidationMessage
-              valid={state.usernameValid}
-              message={state.errorMsg.username}
+              valid={data.usernameValid}
+              message={data.errorMsg.username}
             />
           </span>
         </div>
@@ -115,13 +115,13 @@ function Forms() {
             type="email"
             className="form-control"
             id="email"
-            value={state.email}
+            value={data.email}
             onChange={handleChange}
           />
           <span>
             <ValidationMessage
-              valid={state.emailValid}
-              message={state.errorMsg.email}
+              valid={data.emailValid}
+              message={data.errorMsg.email}
             />
           </span>
         </div>
@@ -132,13 +132,13 @@ function Forms() {
             type="password"
             className="form-control"
             id="password"
-            value={state.password}
+            value={data.password}
             onChange={handleChange}
           />
           <span>
             <ValidationMessage
-              valid={state.passwordValid}
-              message={state.errorMsg.password}
+              valid={data.passwordValid}
+              message={data.errorMsg.password}
             />
           </span>
         </div>
@@ -149,13 +149,13 @@ function Forms() {
             type="password"
             className="form-control"
             id="passwordConfirm"
-            value={state.passwordConfirm}
+            value={data.passwordConfirm}
             onChange={handleChange}
           />
           <span>
             <ValidationMessage
-              valid={state.passwordConfirmValid}
-              message={state.errorMsg.passwordConfirm}
+              valid={data.passwordConfirmValid}
+              message={data.errorMsg.passwordConfirm}
             />
           </span>
         </div>
@@ -164,7 +164,7 @@ function Forms() {
           <button
             className="btn btn-primary"
             type="submit"
-            disabled={!state.formValid}
+            disabled={!data.formValid}
           >
             Submit
           </button>
@@ -173,10 +173,10 @@ function Forms() {
           </button>
         </div>
       </form>
-      <p>Username : {state.username}</p>
-      <p>Email : {state.email}</p>
-      <p>Password : {state.password}</p>
-      <p>PasswordConfirm : {state.passwordConfirm}</p>
+      <p>Username : {data.username}</p>
+      <p>Email : {data.email}</p>
+      <p>Password : {data.password}</p>
+      <p>PasswordConfirm : {data.passwordConfirm}</p>
     </div>
   );
 }
