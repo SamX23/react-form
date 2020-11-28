@@ -1,34 +1,20 @@
 import { useState, useEffect } from "react";
+
 function Forms() {
   const [state, setState] = useState({
     username: "",
-    usernameValid: false,
     email: "",
-    emailValid: false,
     password: "",
-    passwordValid: false,
     passwordConfirm: "",
+    usernameValid: false,
+    emailValid: false,
+    passwordValid: false,
     passwordConfirmValid: false,
+    formValid: false,
     errorMsg: {},
   });
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
-  const validateForm = () => {
-    const {
-      usernameValid,
-      emailValid,
-      passwordValid,
-      passwordConfirmValid,
-    } = state;
-    setState({
-      ...state,
-      formValid:
-        usernameValid && emailValid && passwordValid && passwordConfirmValid,
-    });
-  };
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -41,7 +27,7 @@ function Forms() {
     let passwordValid = true;
     let passwordConfirmValid = true;
 
-    if (id === "username" && username.length < 6) {
+    if (id === "username" && (username.length < 6 || username.length > 15)) {
       usernameValid = false;
       errorMsg.username = "username should be 6 or more characters";
     }
@@ -69,6 +55,24 @@ function Forms() {
       passwordValid,
       passwordConfirmValid,
       errorMsg,
+      formValid:
+        usernameValid && emailValid && passwordValid && passwordConfirmValid,
+    });
+  };
+  const resetForm = (e) => {
+    e.preventDefault();
+
+    setState({
+      username: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+      usernameValid: false,
+      emailValid: false,
+      passwordValid: false,
+      passwordConfirmValid: false,
+      formValid: false,
+      errorMsg: {},
     });
   };
 
@@ -154,6 +158,19 @@ function Forms() {
               message={state.errorMsg.passwordConfirm}
             />
           </span>
+        </div>
+
+        <div className="btn-group">
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={!state.formValid}
+          >
+            Submit
+          </button>
+          <button className="btn btn-danger" onClick={resetForm}>
+            resset
+          </button>
         </div>
       </form>
       <p>Username : {state.username}</p>
