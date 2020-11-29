@@ -23,11 +23,32 @@ export default function FormikForm() {
           isSubmitting: true,
         }}
       >
-        {({}) => (
+        {({ children }) => (
           <form noValidate>
-            <div></div>
-            <label></label>
-            <input />
+            {/* Username */}
+            <div className="form-group">
+              <label htmlFor="userName">Username</label>
+              <input type="text" className="form-control" name="userName" />
+            </div>
+            {/* Email */}
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input type="email" className="form-control" name="email" />
+            </div>
+            {/* Password */}
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input type="password" className="form-control" name="password" />
+            </div>
+            {/* Confirm Password */}
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                name="confirmPassword"
+              />
+            </div>
           </form>
         )}
       </Formik>
