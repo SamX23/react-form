@@ -11,15 +11,6 @@ export default function FormikForm() {
     isValid: false,
   });
 
-  // const handleChange = (values) => {
-  //   setData({
-  //     userName: values.userName,
-  //     email: values.email,
-  //     password: values.password,
-  //     confirmPassword: values.confirmPassword,
-  //   });
-  // };
-
   const validationSchema = Yup.object().shape({
     userName: Yup.string()
       .min(6, "Username should be between 6 and 15 characters")

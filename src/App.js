@@ -1,6 +1,9 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import Forms from "./Forms/Forms";
-import FormikForm from "./Formik-Form/FormikForm";
+
+const Forms = lazy(() => import("./Forms/Forms"));
+const FormikForm = lazy(() => import("./Formik-Form/FormikForm"));
+const ReactHookForm = lazy(() => import("./ReactHookForm/ReactHookForm"));
 
 function App() {
   return (
@@ -28,20 +31,30 @@ function App() {
                   Formik
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/react-hook-form">
+                  React Hook Form
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>
         <div className="container mx-auto">
           <div className="row mt-3">
             <div className="col border py-3">
-              <Switch>
-                <Route path="/formik">
-                  <FormikForm />
-                </Route>
-                <Route path="/">
-                  <Forms />
-                </Route>
-              </Switch>
+              <Suspense fallback={<div>Form is loading ...</div>}>
+                <Switch>
+                  <Route path="/react-hook-form">
+                    <ReactHookForm />
+                  </Route>
+                  <Route path="/formik">
+                    <FormikForm />
+                  </Route>
+                  <Route path="/">
+                    <Forms />
+                  </Route>
+                </Switch>
+              </Suspense>
             </div>
           </div>
         </div>
