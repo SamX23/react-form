@@ -169,7 +169,7 @@ function Forms() {
             Submit
           </button>
           <button className="btn btn-danger" onClick={resetForm}>
-            resset
+            Reset
           </button>
         </div>
       </form>
